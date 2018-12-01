@@ -17,3 +17,8 @@ def mongo_connect(url):
 conn = mongo_connect(MONGODB_URI)
 
 coll = conn[DBS_NAME][COLLECTION_NAME]
+
+def find():
+    recipes = coll.find()
+    #implement error catching and return 
+    
