@@ -1,1 +1,3 @@
 libs/testmongo.py
+.vscode/
+libs/__pycache__/
