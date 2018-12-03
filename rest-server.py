@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, url_for
-from flask_restful import reqparse, abort, Api, Resource, fields, marshal
+from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 import os
 import libs.database as db
 
@@ -10,12 +10,13 @@ def abort_if_recipe_doesnt_exist(recipes,recipe_id):
     if recipe_id not in recipes:
         abort(404, message="Recipe {} doesn't exist".format(recipe_id))
 
-recipe_fields = {
-    'name':fields.String,
-    'method':fields.String,
-    'prep_time':fields.String,
-    'ingredients':fields.List
-}
+# recipe_fields = {
+#     'name': fields.String,
+#     'method': fields.String,
+#     'prep_time': fields.String
+#     'ingredients': fields.List
+# } 
+#could not get marshaling to work
 
 class Recipe(Resource):
     def __init__(self):
@@ -37,27 +38,33 @@ class Recipe(Resource):
         return '', 204
 
     def put(self, recipe_id):
-        recipes = db.find()
         args = self.reqparse.parse_args()
+        
         
         return #
 
 class RecipeList(Resource):
+    #@marshal_with(recipe_fields) could not get marshaling to work
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('name', type=str, required=True, location='json')
-        self.reqparse.add_argument('method', type=str,required=True, location='json')
-        self.reqparse.add_argument('prep_time', type=int,required=True, location='json')
+        self.reqparse.add_argument('method', type=str, required=True, location='json')
+        self.reqparse.add_argument('prep_time', type=int, required=True, location='json')
         super(RecipeList, self).__init__()
    
     def get(self):
         recipes = db.find()
-        return marshal(recipes, recipe_fields)
+        return recipes
 
     def post(self):
         args = self.reqparse.parse_args()
-###############################
-        return 
+        doc = {
+            'name':args['name'],
+            'method':args['method'],
+            'prep_time':args['prep_time']
+        }
+        result = db.insert(doc)
+        return  'database updated', 201
 
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<recipe_id>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')

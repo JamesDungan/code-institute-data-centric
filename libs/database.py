@@ -1,5 +1,7 @@
 import pymongo
 import os
+from bson import json_util
+import json
 
 
 #MONGODB_URI = os.getenv("MONGO_URI")
@@ -20,14 +22,15 @@ conn = mongo_connect(MONGODB_URI)
 coll = conn[DBS_NAME][COLLECTION_NAME]
 
 def find():
-    recipes = []
     cursor = coll.find()
-    for document in cursor:
-        recipes.append(document)
+    recipes = json.loads(json_util.dumps(cursor))
     return recipes
     
 def insert(doc):
-    coll.insert_one(doc)
+    result = coll.insert_one(doc)
+    return result
     
-    
+def update(filtr, updte):
+    result = coll.update_one(filtr, updte)
+    return result
     
