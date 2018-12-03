@@ -33,15 +33,14 @@ class Recipe(Resource):
     def delete(self, recipe_id):
         recipes = db.find()
         abort_if_recipe_doesnt_exist(recipes, recipe_id)
-        del recipes[recipe_id]
+        #
         return '', 204
 
     def put(self, recipe_id):
         recipes = db.find()
         args = self.reqparse.parse_args()
-        task = {'task': args['task']}
-        recipes[recipe_id] = task
-        return task, 201
+        
+        return #
 
 class RecipeList(Resource):
     def __init__(self):
