@@ -25,12 +25,20 @@ def find():
     cursor = coll.find()
     recipes = json.loads(json_util.dumps(cursor))
     return recipes
-    
+
+def findOne(fltr):
+    result = coll.find_one(fltr)
+    recipe = json.loads(json_util.dumps(result))
+    return recipe
+
 def insert(doc):
     result = coll.insert_one(doc)
     return result
-    
-def update(filtr, updte):
-    result = coll.update_one(filtr, updte)
+
+def updateOne(fltr, updte):
+    result = coll.update_one(fltr, updte)
     return result
     
+def deleteOne(fltr):
+    result = coll.delete_one(fltr)
+    return result
