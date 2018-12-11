@@ -1,6 +1,7 @@
 import pymongo
 import os
 from bson import json_util
+import bson
 import json
 
 
@@ -22,23 +23,71 @@ conn = mongo_connect(MONGODB_URI)
 coll = conn[DBS_NAME][COLLECTION_NAME]
 
 def find():
-    cursor = coll.find()
-    recipes = json.loads(json_util.dumps(cursor))
-    return recipes
+    try:
+        cursor = coll.find()
+    except pymongo.errors.PyMongoError as pe:
+        data = []
+        data.append({'error':pe})
+        return data
+    else:
+        try:
+            data=json.loads(bson.json_util.dumps(cursor))
+            return data
+        except bson.errors.InvalidBSON as be:
+            data = []
+            data.append({'error':be})
+            return data
+        except json.JSONDecodeError as je:
+            data = []
+            data.append({'error':je})
+            return data
 
 def findOne(fltr):
-    result = coll.find_one(fltr)
-    recipe = json.loads(json_util.dumps(result))
-    return recipe
+    try:
+        result = coll.find_one(fltr)
+    except pymongo.errors.PyMongoError as pe:
+        data = []
+        data.append({'error':pe})
+        return data
+    else:
+        try:
+            data = json.loads(bson.json_util.dumps(result))
+            return data
+        except bson.errors.InvalidBSON as be:
+            data = []
+            data.append({'error':be})
+            return data
+        except json.JSONDecodeError as je:
+            data = []
+            data.append({'error':je})
+            return data
 
 def insert(doc):
-    result = coll.insert_one(doc)
-    return result
+    try:
+        result = coll.insert_one(doc)
+    except pymongo.errors.PyMongoError as pe:
+        data = []
+        data.append({'error':pe})
+        return data
+    else:
+        return result
 
 def updateOne(fltr, updte):
-    result = coll.update_one(fltr, updte)
-    return result
+    try:
+        result = coll.update_one(fltr, updte)
+    except pymongo.errors.PyMongoError as pe:
+        data = []
+        data.append({'error':pe})
+        return data
+    else:
+        return result
     
 def deleteOne(fltr):
-    result = coll.delete_one(fltr)
-    return result
+    try:
+        result = coll.delete_one(fltr)
+    except pymongo.errors.PyMongoError as pe:
+        data = []
+        data.append({'error':pe})
+        return data
+    else:
+        return result

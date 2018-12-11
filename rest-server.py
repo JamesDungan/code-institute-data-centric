@@ -3,7 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 import os
 import libs.database as db
 from bson import ObjectId
-
+from collections import Iterable
 
 app = Flask(__name__, static_url_path="")
 api = Api(app)
@@ -29,7 +29,9 @@ class Recipe(Resource):
         args = self.reqparse.parse_args()
         oid = ObjectId(args['_id'])
         fltr = {'_id': oid}
-        recipe = db.findOne(fltr)
+        result = db.findOne(fltr)
+        if any('error' in r for r in result):
+            return result, 500
         return recipe, 200
 
     def delete(self):
@@ -37,6 +39,9 @@ class Recipe(Resource):
         oid = ObjectId(args['_id'])
         fltr = {'_id': oid}
         result = db.deleteOne(fltr)
+        if isinstance(result, Iterable):
+            if any('error' in r for r in result):
+                return result, 500
         return 'document deleted', 204
 
     def put(self):
@@ -47,7 +52,10 @@ class Recipe(Resource):
                 'method': args['method'], 
                 'prep_time':args['prep_time']}
                 }
-        result= db.updateOne(fltr, updte)
+        result = db.updateOne(fltr, updte)
+        if isinstance(result, Iterable):
+            if any('error' in r for r in result):
+                return result, 500
         return 'database updated', 201
 
 class RecipeList(Resource):
@@ -60,8 +68,10 @@ class RecipeList(Resource):
         super(RecipeList, self).__init__()
    
     def get(self):
-        recipes = db.find()
-        return recipes, 200
+        result = db.find()
+        if any('error' in r for r in result):
+            return result, 500
+        return result, 200
 
     def post(self):
         args = self.reqparse.parse_args()
@@ -70,11 +80,13 @@ class RecipeList(Resource):
                 'prep_time':args['prep_time']
                 }
         result = db.insert(doc)
+        if isinstance(result, Iterable):
+            if any('error' in r for r in result):
+                return result, 500
         return  'database updated', 201
 
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
-
 if __name__ == '__main__':
     # app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)),debug=True)
     app.run(debug=True)
