@@ -1,6 +1,7 @@
 import pymongo
 import os
 from bson import json_util
+from bson import ObjectId   
 import bson
 import json
 
@@ -43,8 +44,10 @@ def find():
             return data
 
 def findOne(fltr):
+    id = fltr['_id'] 
+    oid = ObjectId(id)
     try:
-        result = coll.find_one(fltr)
+        result = coll.find_one(oid)
     except pymongo.errors.PyMongoError as pe:
         data = []
         data.append({'error':pe})
@@ -73,8 +76,10 @@ def insert(doc):
         return result
 
 def updateOne(fltr, updte):
+    id = fltr['_id'] 
+    oid = ObjectId(id)
     try:
-        result = coll.update_one(fltr, updte)
+        result = coll.update_one(oid, updte)
     except pymongo.errors.PyMongoError as pe:
         data = []
         data.append({'error':pe})
@@ -83,8 +88,10 @@ def updateOne(fltr, updte):
         return result
     
 def deleteOne(fltr):
+    id = fltr['_id'] 
+    oid = ObjectId(id)
     try:
-        result = coll.delete_one(fltr)
+        result = coll.delete_one(oid)
     except pymongo.errors.PyMongoError as pe:
         data = []
         data.append({'error':pe})

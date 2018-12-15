@@ -1,3 +1,4 @@
 libs/testmongo.py
 .vscode/
 libs/__pycache__/
+ChromeForTesting.bat
