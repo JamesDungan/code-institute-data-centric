@@ -1,0 +1,146 @@
+<script id="recipe-list" type="text/html">
+    <div class='row'>
+        <div class='col-sm-10'>
+            <img src='../img/IMAG0022.jpg' class='img-thumbnail list-image'>
+            <h4 >{{name}}</h4>
+            <p>{{summary}}</p>
+            <button recipe_id={{_id.$oid}} type='button' class='btn btn-success read' >Read More</button>
+        </div>
+        <div class='col-sm-2'>
+            <h4>Timing</h4>
+            <p><b>Prep: </b>{{prep_time}} minutes</p>
+            <p><b>Cook: </b>{{cook_time}} minutes</p>
+            <br>
+            <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
+            <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button>
+        </div>
+    </div>
+</script>
+
+
+<script id="recipe-single" type="text/html">
+    <div class="row">
+        <div class="col">
+            <img src='../img/IMAG0022.jpg' class='img-thumbnail single-image'>
+        </div>
+        <div class="col-sm-6">
+            <h3>{{name}}</h3>
+        </div>
+        <div class="col">
+            <h4>Timing</h4>
+            <p><b>Prep: </b>{{prep_time}} minutes</p>
+            <p><b>Cook: </b>{{cook_time}} minutes</p>            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <h4>Ingredients</h4>
+            <ul id="ingredients">
+                {{#ingredients}}
+                    <li>{{.}}</li>
+                {{/ingredients}}    
+            </ul>
+        </div>
+        <div class="col">
+            <h4>Method</h4>
+            <p>{{method}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <button type='button' class='btn btn-outline-primary btn-sm back' >Back to List</button> 
+        </div>
+        <div class="col-3 ">
+                <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
+                <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button> 
+        </div>
+    </div>
+</script>
+
+<script id="ingredients-list", type="text/html">
+
+</script>
+
+<script id="recipe-form", type="text/html">
+    <form id="new-recipe" class="form-horizontal" method="POST">
+    <fieldset>
+
+
+    <legend>Recipe Form</legend>
+
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" for="name">Name</label>  
+    <div class="col-md-4">
+    <input id="name" name="name" type="text" placeholder="recipe name" class="form-control input-md">
+        
+    </div>
+    </div>
+
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" for="prep_time">Preparation time</label>  
+    <div class="col-md-4">
+    <input id="prep_time" name="prep_time" type="text" placeholder="time to prepare" class="form-control input-md" ><span>(in minutes)</span>
+        
+    </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="cook_time">Cooking time</label>  
+        <div class="col-md-4">
+        <input id="cook_time" name="cook_time" type="text" placeholder="time to cook" class="form-control input-md" > <span>(in minutes)</span>
+        
+        </div>
+    </div>
+
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" for="ingredients_list">Ingredients</label>
+        <ul class="col-md-4 ingredients_list" >
+        <li>
+            <input class="ingredients" name="ingredients" type="text" class="form-control input-md" >
+        </li>
+        </ul>
+    <div class="col-md-4 ingredient_buttons" >
+        <button type="button" onclick="add_ingredients()" class="btn btn-outline-primary btn-sm add_ingredients">Add</button>
+        <button type="button" onclick="remove_ingredients()" class="btn btn-outline-warning btn-sm remove_ingredients">Remove</button>
+    </div>
+    </div>
+
+
+    <div class="form-group">
+    <label class="col-md-4 control-label" for="method_input">Method</label>
+    <div class="col-md-4">                     
+        <textarea class="form-control" id="method_input" name="method"></textarea>
+    </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="summary_input">Short Description</label>
+        <div class="col-md-4">                     
+        <textarea class="form-control" id="summary_input" name="summary"></textarea>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+    <div class="col-md-4" id="form-buttons">
+        <input type="reset" id="recipe_reset" name="recipe_reset" class="btn btn-warning"/>
+        <button type="button" onclick="submitRecipe()" id="recipe_submit" name="recipe_submit" class="btn btn-success submit">Submit</button>        
+    </div>
+    </div>
+    <div id="recipe_id" recipe_id=""></div>
+    </fieldset>
+    </form>
+
+</script>
+
+<script id="add-ingredients" type="text/html">
+    <li><input class="ingredients" name="ingredients" type="text" class="form-control input-md"></li>
+</script>
+
+<script id="update-recipe-button" type="text/html">
+        <button type="button" onclick="updateRecipe()" id="recipe_update" name="recipe_update" class="btn btn-success submit">Submit</button>
+</script>

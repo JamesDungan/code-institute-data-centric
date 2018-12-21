@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, jsonify, render_template, url_for
 from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 import os
 import libs.database as db
@@ -10,38 +10,37 @@ api = Api(app)
 
 class Recipe(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('name', type=str, required=False, location='json')
-        self.reqparse.add_argument('method', type=str,required=False, location='json')
-        self.reqparse.add_argument('prep_time', type=int,required=False, location='json')
+        # self.reqparse = reqparse.RequestParser()
+        # self.reqparse.add_argument('name', type=str, required=False, location='json')
+        # self.reqparse.add_argument('method', type=str,required=False, location='json')
+        # self.reqparse.add_argument('prep_time', type=int,required=False, location='json')
         super(Recipe, self).__init__()
         
     def get(self, id):
-        # args = self.reqparse.parse_args()
-        # oid = ObjectId(args['_id'])
         fltr = {'_id': id}
         result = db.findOne(fltr)
         if any('error' in r for r in result):
             return result, 500
         return result, 200
 
-    def delete(self):
-        args = self.reqparse.parse_args()
-        oid = ObjectId(args['_id'])
-        fltr = {'_id': oid}
+    def delete(self, id):
+        fltr = {'_id': id}
         result = db.deleteOne(fltr)
         if isinstance(result, Iterable):
             if any('error' in r for r in result):
                 return result, 500
         return 'document deleted', 204
 
-    def put(self):
-        args = self.reqparse.parse_args()
-        oid = ObjectId(args['_id'])
-        fltr = {'_id': oid}
-        updte = {'$set': {'name': args['name'],
-                'method': args['method'], 
-                'prep_time':args['prep_time']}
+    def put(self, id):
+        fltr = {'_id': id}
+        json_data = request.get_json(force=True)
+        updte = {'$set': {'name':json_data['name'],
+                        'method':json_data['method'],
+                        'summary':json_data['summary'],
+                        'prep_time':json_data['prep_time'],
+                        'cook_time':json_data['cook_time'],
+                        'ingredients':json_data['ingredients']
+                        }
                 }
         result = db.updateOne(fltr, updte)
         if isinstance(result, Iterable):
@@ -51,10 +50,13 @@ class Recipe(Resource):
 
 class RecipeList(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('name', type=str, required=True, location='json')
-        self.reqparse.add_argument('method', type=str, required=True, location='json')
-        self.reqparse.add_argument('prep_time', type=int, required=True, location='json')
+        # self.reqparse = reqparse.RequestParser()
+        # self.reqparse.add_argument('name', type=str, required=True, location='json')
+        # self.reqparse.add_argument('method', type=str, required=True, location='json')
+        # self.reqparse.add_argument('summary', type=str, required=True, location='json')
+        # self.reqparse.add_argument('prep_time', type=int, required=True, location='json')
+        # self.reqparse.add_argument('cook_time', type=int, required=True, location='json')
+        # self.reqparse.add_argument('ingredients', type=list , required=True, location='json', action='append')
         super(RecipeList, self).__init__()
    
     def get(self):
@@ -64,10 +66,16 @@ class RecipeList(Resource):
         return result, 200
 
     def post(self):
-        args = self.reqparse.parse_args()
-        doc = {'name':args['name'],
-                'method':args['method'],
-                'prep_time':args['prep_time']
+        # args = self.reqparse.parse_args()
+        # print(args)
+        json_data = request.get_json(force=True)
+
+        doc = {'name':json_data['name'],
+                'method':json_data['method'],
+                'summary':json_data['summary'],
+                'prep_time':json_data['prep_time'],
+                'cook_time':json_data['cook_time'],
+                'ingredients':json_data['ingredients']
                 }
         result = db.insert(doc)
         if isinstance(result, Iterable):

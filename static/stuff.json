@@ -1,0 +1,25 @@
+[
+    {"name":"name",
+    "value":"Bread"},
+
+    {"name":"prep_time",
+    "value":"10"},
+
+    {"name":"cook_time",
+    "value":"15"},
+
+    {"name":"ingredients",
+    "value":"flour 6g"},
+
+    {"name":"ingredients",
+    "value":"salt 1tsp"},
+
+    {"name":"ingredients",
+    "value":"eggs 6"},
+
+    {"name":"method",
+    "value":"mix it all up"},
+    
+    {"name":"summary",
+    "value":"bread is great"}
+]

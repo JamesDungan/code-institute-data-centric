@@ -78,8 +78,9 @@ def insert(doc):
 def updateOne(fltr, updte):
     id = fltr['_id'] 
     oid = ObjectId(id)
+    fltr = {'_id':oid}
     try:
-        result = coll.update_one(oid, updte)
+        result = coll.update_one(fltr, updte)
     except pymongo.errors.PyMongoError as pe:
         data = []
         data.append({'error':pe})
@@ -90,8 +91,9 @@ def updateOne(fltr, updte):
 def deleteOne(fltr):
     id = fltr['_id'] 
     oid = ObjectId(id)
+    fltr = {'_id': oid}
     try:
-        result = coll.delete_one(oid)
+        result = coll.delete_one(fltr)
     except pymongo.errors.PyMongoError as pe:
         data = []
         data.append({'error':pe})

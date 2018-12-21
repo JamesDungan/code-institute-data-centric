@@ -1,105 +1,196 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Reciplease!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="index.html">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="navbar-link" href="{{ url_for('new_recipe') }}">Add New Recipe</a>
-                </li>
-            </ul>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Reciplease!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="../bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="index.html">Home</a>
+        </nav>    
+
+        <h1> Welcome to Reciplease </h1>
+        <div class="container new-recipe-button">
+            <button  onclick="showRecipeForm()" type='button' class='btn btn-primary btn-sm'>Add New Recipe</button>
         </div>
-    </nav>    
+        <div class="container back-to-list-button">
+            <button  onclick="showList()" type='button' class='btn btn-primary btn-sm'>Back To List</button>
+        </div>
+        <div class="container list-container"></div>
 
-<h1> Welcome to Reciplease </h1>
-<div class="container list-container">
-   
-</div>
+        <div class="container single-container"></div>
 
-<div class="container single-container">
-   
-</div>
+        <div class="container form-container"></div>
 
-<!-- <div class="container single-container">
-   
-</div> -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="../bootstrap/bootstrap.min.js"></script>
-</body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="../bootstrap/bootstrap.min.js"></script>
+        <script src="../mustache/mustache.js"></script>
+    </body>
 </html>
 
 
 <script type="text/javascript">
 
    $( document ).ready(function(){
-    console.log("DOM is ready")
-        showList();
-        
-    });
-    
-        
-        
-  
-    
-   $(window).on('hashchange', function() { 
-    
+       showList();
     });
 
-function showList(){
-    console.log("showing list")
-    $.getJSON('/reciplease/api/v1.0/recipes', function(data){
-        $('.single-container', '.list-container').html('');
-        $.each( data, function( key, val ) {
-            $('.list-container').append(`<div class='row'>
-                <div class='col-sm-10'>
-                    <img src='../img/IMAG0022.jpg' class='img-thumbnail list-image'>
-                    <h4 >`+val.name+`</h4>
-                    <p>`+val.summary+`</p>
-                    <button recipe_id=`+val._id.$oid+` type='button' class='btn btn-success read' >Read More</button>
-                </div>
-                <div class='col-sm-2'>
-                    <h4>Timing</h4>
-                    <p><b>Prep: </b>`+val.prep_time+` minutes</p>
-                    <p><b>Cook: </b>`+val.cook_time+` minutes</p>
-                    <br>
-                    <button  recipe_id=`+val._id.$oid+` type='button' class='btn btn-outline-warning btn-sm'>EDIT</button>
-                    <button  recipe_id=`+val._id.$oid+` type='button' class='btn btn-outline-danger btn-sm'>DELETE</button>
-                </div>
-            </div>`);
+    function showRecipeForm(){
+        $('.new-recipe-button').hide();
+        $('.back-to-list-button').show();
+        $('.single-container').html('');
+        $('.list-container',).html('');
+        $('.form-container',).html('');
+        $.get('../mustache/templates.html', function(templates) {
+            let template = $(templates).filter('#recipe-form').html();
+            $('.form-container').append(Mustache.render(template));
         });
-        $('.read').click(function(){
-            let id = this.getAttribute('recipe_id');
-            showSingle(id);
-            //////////////////NEXT
-        })
- 
-    });
-    
-}
+    }
 
-function showSingle(id){
-    $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
-        $('.list-container').html('');
-        $('.single-container').append(id);
+    function add_ingredients(){
+        $.get('../mustache/templates.html', function(templates) {
+            var template = $(templates).filter('#add-ingredients').html();
+            $('.ingredients_list').append(Mustache.render(template));
+            
+        });
+    }
+
+    function remove_ingredients(){
+        $('.ingredients_list li:last-child').remove();
+    }
+
+    function setUpAndSend(url, type){
+        let formData = $("#new-recipe").serializeArray()
+        let trimmedData ={}
+        let ingredients = []
+        $.each(formData, function(i, v){
+            if(v.name === "ingredients"){
+                ingredients.push(v.value);
+            }else{
+                trimmedData[v.name] = v.value;
+            }
+            trimmedData["ingredients"] = ingredients;
+        });
+        trimmedData = JSON.stringify(trimmedData);
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: type,
+            contentType: 'application/json',
+            data: trimmedData,
+            processData: false,
+            success: function( data, textStatus, jQxhr ){
+                showList();
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                console.log( errorThrown );
+                showList();
+            }
+        });
+    }
+
+    function submitRecipe(){
+        let url = '/reciplease/api/v1.0/recipes';
+        let type = 'post';
+        setUpAndSend(url, type);
         
-    });
-}
+    }
+    function updateRecipe(){
+        let url = '/reciplease/api/v1.0/recipe/';
+        let type = 'put';
+        let id = $('#recipe_id').attr('recipe_id');
+        url += id;
+        setUpAndSend(url, type);
+    }
 
+    function showList(){
+        $.getJSON('/reciplease/api/v1.0/recipes', function(data){
+            $('.new-recipe-button').show();
+            $('.back-to-list-button').hide();
+            $('.single-container').html('');
+            $('.list-container',).html('');
+            $('.form-container',).html('');
+            $.get('../mustache/templates.html', function(templates) {
+                var template = $(templates).filter('#recipe-list').html();
+                $.each( data, function( key, val ) {
+                    $('.list-container').append(Mustache.render(template, val));
+                });
+                $('.read').click(function(){
+                    let id = this.getAttribute('recipe_id');
+                    showSingle(id);
+                })
+                $('.edit').click(function(){
+                    let id = this.getAttribute('recipe_id');
+                    editSingle(id);
+                })
+                $('.delete').click(function(){
+                    let id = this.getAttribute('recipe_id');
+                    deleteSingle(id);
+                });
+            });
+
+        });
+    } 
+    function showSingle(id){
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+            $('.list-container',).html('');
+            $('.single-container').html('');
+            $.get('../mustache/templates.html', function(templates) {
+                var template = $(templates).filter('#recipe-single').html();
+                $('.single-container').append(Mustache.render(template, data));
+                $('.back').click(function(){
+                    showList(); 
+                });
+                $('.edit').click(function(){
+                    let id = this.getAttribute('recipe_id');
+                    editSingle(id);
+                })
+                $('.delete').click(function(){
+                    let id = this.getAttribute('recipe_id');
+                    deleteSingle(id);
+                });
+            });
+        });    
+    } 
+    function deleteSingle(id){
+        $.ajax({
+        url: '/reciplease/api/v1.0/recipe/'+id,
+        type: 'delete',
+        success: function(){
+            console.log('delete successful');
+            showList();
+            }
+        });
+    }
+    function editSingle(id){
+        showRecipeForm();
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+            $('#recipe_id').attr('recipe_id', data._id.$oid);
+            $('#name').val(data.name);
+            $('#prep_time').val(data.prep_time);
+            $('#cook_time').val(data.cook_time); 
+            remove_ingredients();
+            $.each(data.ingredients, function(i,v){
+                add_ingredients();
+                $('.ingredients_list li:last-child input').val(v);
+                });
+            $('#method_input').val(data.method);
+            $('#summary_input').val(data.summary);
+            $('#recipe_submit').remove();
+            $.get('../mustache/templates.html', function(templates) {
+                var template = $(templates).filter('#update-recipe-button').html();
+                $('#form-buttons').append(Mustache.render(template));
+            });
+            
+        });
+    }
 </script>
+
 
 
 
