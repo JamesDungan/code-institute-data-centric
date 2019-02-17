@@ -8,12 +8,9 @@ from collections import Iterable
 app = Flask(__name__, static_url_path="")
 api = Api(app)
 
+
 class Recipe(Resource):
     def __init__(self):
-        # self.reqparse = reqparse.RequestParser()
-        # self.reqparse.add_argument('name', type=str, required=False, location='json')
-        # self.reqparse.add_argument('method', type=str,required=False, location='json')
-        # self.reqparse.add_argument('prep_time', type=int,required=False, location='json')
         super(Recipe, self).__init__()
         
     def get(self, id):
@@ -50,13 +47,6 @@ class Recipe(Resource):
 
 class RecipeList(Resource):
     def __init__(self):
-        # self.reqparse = reqparse.RequestParser()
-        # self.reqparse.add_argument('name', type=str, required=True, location='json')
-        # self.reqparse.add_argument('method', type=str, required=True, location='json')
-        # self.reqparse.add_argument('summary', type=str, required=True, location='json')
-        # self.reqparse.add_argument('prep_time', type=int, required=True, location='json')
-        # self.reqparse.add_argument('cook_time', type=int, required=True, location='json')
-        # self.reqparse.add_argument('ingredients', type=list , required=True, location='json', action='append')
         super(RecipeList, self).__init__()
    
     def get(self):
@@ -66,8 +56,6 @@ class RecipeList(Resource):
         return result, 200
 
     def post(self):
-        # args = self.reqparse.parse_args()
-        # print(args)
         json_data = request.get_json(force=True)
 
         doc = {'name':json_data['name'],
@@ -86,5 +74,4 @@ class RecipeList(Resource):
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
 if __name__ == '__main__':
-    # app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)),debug=True)
     app.run(debug=True)

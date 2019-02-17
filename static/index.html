@@ -52,11 +52,11 @@
         });
     }
 
-    function add_ingredients(){
+    function add_ingredients(cb){
         $.get('../mustache/templates.html', function(templates) {
             var template = $(templates).filter('#add-ingredients').html();
             $('.ingredients_list').append(Mustache.render(template));
-            
+            cb();
         });
     }
 
@@ -176,9 +176,13 @@
             $('#cook_time').val(data.cook_time); 
             remove_ingredients();
             $.each(data.ingredients, function(i,v){
-                add_ingredients();
-                $('.ingredients_list li:last-child input').val(v);
-                });
+                add_ingredients(
+                    function(){
+                        $('.ingredients_list>li:last-child>input').val(v);
+                    }
+                );
+                
+            });
             $('#method_input').val(data.method);
             $('#summary_input').val(data.summary);
             $('#recipe_submit').remove();

@@ -115,6 +115,9 @@
      * array of tokens in the subtree and 2) the index in the original template at
      * which the closing tag for that section begins.
      */
+
+    
+
     function parseTemplate (template, tags) {
       if (!template)
         return [];
