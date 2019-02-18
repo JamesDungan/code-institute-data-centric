@@ -7,9 +7,9 @@ import json
 
 
 #MONGODB_URI = os.getenv("MONGO_URI")
-MONGODB_URI = 'mongodb://root:IflsMF01@ds211504.mlab.com:11504/code-institute-data-centric'
-DBS_NAME = "code-institute-data-centric"
-COLLECTION_NAME = "recipeDB"
+MONGODB_URI = os.environ.get('MONGODB_URI') 
+DBS_NAME = os.environ.get('DBS_NAME')
+COLLECTION_NAME = os.environ.get('COLLECTION_NAME')
 
 def mongo_connect(url):
     try:
