@@ -76,5 +76,5 @@ class RecipeList(Resource):
 
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run()
