@@ -8,6 +8,9 @@ from collections import Iterable
 app = Flask(__name__, static_url_path="")
 api = Api(app)
 
+@app.route('/')
+def index():
+    return render_template("index.html")
 
 class Recipe(Resource):
     def __init__(self):
