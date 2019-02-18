@@ -55,7 +55,6 @@ def findOne(fltr):
     else:
         try:
             data = json.loads(bson.json_util.dumps(result))
-            return data
         except bson.errors.InvalidBSON as be:
             data = []
             data.append({'error':be})
@@ -63,6 +62,8 @@ def findOne(fltr):
         except json.JSONDecodeError as je:
             data = []
             data.append({'error':je})
+            return data
+        else:
             return data
 
 def insert(doc):
