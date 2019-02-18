@@ -8,12 +8,9 @@ from collections import Iterable
 app = Flask(__name__, static_url_path="")
 api = Api(app)
 
-class Index(Resource):
-        def __init__(self):
-            super(Index, self).__init__()
-        
-        def get(self):
-            return render_template("index.html")
+@app.route('/')
+def index():
+    return render_template("index.html")
 
 class Recipe(Resource):
     def __init__(self):
@@ -77,7 +74,6 @@ class RecipeList(Resource):
                 return result, 500
         return  'database updated', 201
 
-api.add_resource(Index, '/', endpoint="index")
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
 if __name__ == '__main__':
