@@ -1,4 +1,4 @@
-# full-stack-frameworks-django
+# data-centric-development
 
 [ReciPlease](https://code-institute-data-centric.herokuapp.com/) is a Single Page Application (SPA) developed as part of the Code Institute Full Stack Software Development Diploma - DATA CENTRIC DEVELOPMENT module. It uses HTML CSS (Bootstrap) and JavaScript on the client side. The backend consists of a REST API created using Flask RESTful which allows data to flow to and from a mongo database.
 
