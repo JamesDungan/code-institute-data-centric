@@ -2,3 +2,4 @@ libs/testmongo.py
 .vscode/
 libs/__pycache__/
 ChromeForTesting.bat
+__pycache__/rest_server.cpython-37.pyc
