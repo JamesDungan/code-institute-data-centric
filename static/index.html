@@ -89,8 +89,10 @@
                 
                 if($('#image_file')[0].files[0] != undefined && type == 'post'){
                     fd = new FormData();
+                    let id = data._id;
                     $.each(jQuery('#image_file')[0].files, function(i, file) {
                         fd.append('image_file', file);
+                        fd.append('_id', id)
                     });
                     
                     sendImage(fd);
