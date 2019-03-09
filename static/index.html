@@ -77,20 +77,41 @@
             trimmedData["ingredients"] = ingredients;
         });
         trimmedData = JSON.stringify(trimmedData);
+        
         $.ajax({
             url: url,
             dataType: 'json',
-            type: type,
+            method: type,
             contentType: 'application/json',
             data: trimmedData,
             processData: false,
-            success: function( data, textStatus, jQxhr ){
-                showList();
+            success: function( data, textStatus, jQxhr ){ 
+                
+                if($('#image_file')[0].files[0] != undefined && type == 'post'){
+                    fd = new FormData();
+                    $.each(jQuery('#image_file')[0].files, function(i, file) {
+                        fd.append('image_file', file);
+                    });
+                    
+                    sendImage(fd);
+                } 
             },
             error: function( jqXhr, textStatus, errorThrown ){
                 console.log( errorThrown );
                 showList();
             }
+        });
+    }
+
+    function sendImage(fd){
+        $.ajax({url:'/reciplease/api/v1.0/upload',
+        method:'post',
+        contentType:false,
+        processData:false,
+        data: fd,
+        success: function(data, textStatus, jQxhr){
+            showList();
+            } 
         });
     }
 

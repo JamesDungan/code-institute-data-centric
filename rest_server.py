@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, render_template, url_for
 from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
-import os
+import werkzeug, os
 import libs.database as db
+import libs.image_service as iService
 from bson import ObjectId
 from collections import Iterable
 
@@ -48,7 +49,7 @@ class Recipe(Resource):
 class RecipeList(Resource):
     def __init__(self):
         super(RecipeList, self).__init__()
-   
+
     def get(self):
         result = db.find()
         if any('error' in r for r in result):
@@ -71,7 +72,31 @@ class RecipeList(Resource):
                 return result, 500
         return  'database updated', 201
 
+class UploadFile(Resource):
+    def __init__(self):
+        
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('image_file', type=werkzeug.datastructures.FileStorage, location='files')
+        self.baseUrl = 'https://s3-eu-west-1.amazonaws.com/ci-data-centric-images/'
+        super(UploadFile, self).__init__()
+
+    def post(self):
+        print(request.files)
+        data = self.reqparser.parse_args()
+        if data['image_file'] == "":
+            return {
+                'data':'',
+                'message':'No file found',
+                'status':'error'
+                }
+        file = data['image_file']
+        result = iService.upload_file('test', file)
+        return 'test', 200
+
+
 api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
+api.add_resource(UploadFile, '/reciplease/api/v1.0/upload', endpoint='upload')
+
 if __name__ == '__main__':
     app.run(debug=True)

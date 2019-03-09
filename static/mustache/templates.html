@@ -62,7 +62,7 @@
 </script>
 
 <script id="recipe-form", type="text/html">
-    <form id="new-recipe" class="form-horizontal" method="POST">
+    <form id="new-recipe" class="form-horizontal" enctype="multipart/form-data">
     <fieldset>
 
 
@@ -121,6 +121,13 @@
         <label class="col-md-4 control-label" for="summary_input">Short Description</label>
         <div class="col-md-4">                     
         <textarea class="form-control" id="summary_input" name="summary"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="summary_input">Picture</label>
+        <div class="col-md-4">                     
+        <input type="file" class="form-control" id="image_file" name="image_file"/>
         </div>
     </div>
 

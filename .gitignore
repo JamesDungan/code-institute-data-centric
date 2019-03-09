@@ -3,3 +3,4 @@ libs/testmongo.py
 libs/__pycache__/
 ChromeForTesting.bat
 __pycache__/rest_server.cpython-37.pyc
+.env
