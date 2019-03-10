@@ -4,15 +4,15 @@
             <img src={{image_url}} class='img-thumbnail list-image'>
             <h4 >{{name}}</h4>
             <p>{{summary}}</p>
-            <button recipe_id={{_id.$oid}} type='button' class='btn btn-success read' >Read More</button>
+            <button recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-success read' >Read More</button>
         </div>
         <div class='col-sm-2'>
             <h4>Timing</h4>
             <p><b>Prep: </b>{{prep_time}} minutes</p>
             <p><b>Cook: </b>{{cook_time}} minutes</p>
             <br>
-            <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
-            <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button>
+            <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
+            <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button>
         </div>
     </div>
 </script>
@@ -51,8 +51,8 @@
             <button type='button' class='btn btn-outline-primary btn-sm back' >Back to List</button> 
         </div>
         <div class="col-3 ">
-                <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
-                <button  recipe_id={{_id.$oid}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button> 
+                <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
+                <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button> 
         </div>
     </div>
 </script>
@@ -124,7 +124,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="image">
         <label class="col-md-4 control-label" for="summary_input">Picture</label>
         <div class="col-md-4">                     
         <input type="file" class="form-control" id="image_file" name="image_file"/>
@@ -139,6 +139,7 @@
     </div>
     </div>
     <div id="recipe_id" recipe_id=""></div>
+    <div id="image_key" image_key=""></div>
     </fieldset>
     </form>
 

@@ -15,22 +15,25 @@ class Recipe(Resource):
     def __init__(self):
         super(Recipe, self).__init__()
         
-    def get(self, id):
+    def get(self, id, key):
         fltr = {'_id': id}
         result = db.findOne(fltr)
         if any('error' in r for r in result):
             return result, 500
         return result, 200
 
-    def delete(self, id):
+    def delete(self, id, key):
         fltr = {'_id': id}
         result = db.deleteOne(fltr)
         if isinstance(result, Iterable):
             if any('error' in r for r in result):
                 return result, 500
+        imgResult = iService.delete_file(key)
+        if hasattr(imgResult, 'msg'):
+            return imgResult.msg, 500
         return 'document deleted', 204
 
-    def put(self, id):
+    def put(self, id, key):
         fltr = {'_id': id}
         json_data = request.get_json(force=True)
         updte = {'$set': {'name':json_data['name'],
@@ -104,18 +107,20 @@ class UploadFile(Resource):
         
         imgResult = iService.upload_file(name, file)
         if hasattr(imgResult, 'msg'):
-            return imgResult.msg, 404
+            return imgResult.msg, 500
         
         fltr = {'_id' : objectId}
         url = self.baseUrl+name
-        updte =  {'$set': {'image_url':url}}
+        imgKey = imgResult.key
+        updte =  {'$set': {'image_url':url,
+                            'image_key':imgKey}}
                 
         result = db.updateOne(fltr, updte)
 
         return 'image uploaded', 200
 
 
-api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>', endpoint='recipe')
+api.add_resource(Recipe, '/reciplease/api/v1.0/recipe/<id>/<key>', endpoint='recipe')
 api.add_resource(RecipeList, '/reciplease/api/v1.0/recipes', endpoint='recipes')
 api.add_resource(UploadFile, '/reciplease/api/v1.0/upload', endpoint='upload')
 

@@ -87,16 +87,25 @@
             processData: false,
             success: function( data, textStatus, jQxhr ){ 
                 
-                if($('#image_file')[0].files[0] != undefined && type == 'post'){
-                    fd = new FormData();
-                    let id = data._id;
-                    $.each(jQuery('#image_file')[0].files, function(i, file) {
-                        fd.append('image_file', file);
-                        fd.append('_id', id)
-                    });
+                if($('#image_file')[0] != undefined && type == 'post'){
+                    if ($('#image_file')[0].files[0] != undefined){
+                        fd = new FormData();
+                        let id = data._id;
+                        $.each(jQuery('#image_file')[0].files, function(i, file) {
+                            fd.append('image_file', file);
+                            fd.append('_id', id)
+                        });
+                        
+                        sendImage(fd);
+                    } else
+                        {
+                        showList();
+                        }
                     
-                    sendImage(fd);
-                } 
+                }else{
+                    showList();
+                }
+                
             },
             error: function( jqXhr, textStatus, errorThrown ){
                 console.log( errorThrown );
@@ -127,7 +136,9 @@
         let url = '/reciplease/api/v1.0/recipe/';
         let type = 'put';
         let id = $('#recipe_id').attr('recipe_id');
-        url += id;
+        let key = $('#image_key').attr('image_key');
+        url = url + id +'/' + key;
+        
         setUpAndSend(url, type);
     }
 
@@ -145,22 +156,25 @@
                 });
                 $('.read').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    showSingle(id);
+                    let key = this.getAttribute('data_key');
+                    showSingle(id, key);
                 })
                 $('.edit').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    editSingle(id);
+                    let key = this.getAttribute('data_key');
+                    editSingle(id, key);
                 })
                 $('.delete').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    deleteSingle(id);
+                    let key = this.getAttribute('data_key');
+                    deleteSingle(id, key);
                 });
             });
 
         });
     } 
-    function showSingle(id){
-        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+    function showSingle(id, key){
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id+'/'+key, function(data){
             $('.list-container',).html('');
             $('.single-container').html('');
             $.get('../mustache/templates.html', function(templates) {
@@ -180,9 +194,9 @@
             });
         });    
     } 
-    function deleteSingle(id){
+    function deleteSingle(id, key){
         $.ajax({
-        url: '/reciplease/api/v1.0/recipe/'+id,
+        url: '/reciplease/api/v1.0/recipe/'+id+'/'+key,
         type: 'delete',
         success: function(){
             console.log('delete successful');
@@ -190,10 +204,11 @@
             }
         });
     }
-    function editSingle(id){
+    function editSingle(id, key){
         showRecipeForm();
-        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id+'/'+key, function(data){
             $('#recipe_id').attr('recipe_id', data._id.$oid);
+            $('#image_key').attr('image_key', data.image_key);
             $('#name').val(data.name);
             $('#prep_time').val(data.prep_time);
             $('#cook_time').val(data.cook_time); 
@@ -209,6 +224,7 @@
             $('#method_input').val(data.method);
             $('#summary_input').val(data.summary);
             $('#recipe_submit').remove();
+            $('#image').remove();
             $.get('../mustache/templates.html', function(templates) {
                 var template = $(templates).filter('#update-recipe-button').html();
                 $('#form-buttons').append(Mustache.render(template));

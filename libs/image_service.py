@@ -19,4 +19,17 @@ def upload_file(filename, file):
     except BotoCoreError as e:
         return e
     return response
-        
+
+def delete_file(key):
+    delete = {
+        'Objects':[
+            {
+                'Key': key
+            },
+        ],
+    }
+    try:
+        response = s3.Bucket('ci-data-centric-images').delete_objects(Delete=delete)
+    except BotoCoreError as e:
+        return e
+    return response
