@@ -1,11 +1,14 @@
-.list-image{
-    max-width:30%;
-    float: left;
-}
-
 *{
     margin:0;
     padding:0;
+}
+
+.card-img-top{
+    margin-top: 2%;
+}
+
+.card button {
+    margin-bottom:2%;
 }
 
 .list-container{
