@@ -8,16 +8,29 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="../bootstrap/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
+        <link href="https://fonts.googleapis.com/css?family=Bad+Script|Kreon|Satisfy" rel="stylesheet">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="index.html">Home</a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="index.html">Home</a>
+                </li> 
+                <li class="nav-item new-recipe-button">
+                    <button  onclick="showRecipeForm()" type='button' class="nav">Add New Recipe</button>
+                </li>
+            </ul>
         </nav>    
 
-        <h1 class="text-center"> Reciplease </h1>
-        <div class="container new-recipe-button">
-            <button  onclick="showRecipeForm()" type='button' class='btn btn-primary btn-sm'>Add New Recipe</button>
+        
+        <div class="container main-header">
+            <div class="header-content">
+                <h1 class="text-center reciplease"> Reciplease </h1>
+                <div class="vision">Our aim is to please you with our tasty recipes!</div>
+                <p class="vision-p">Find all of our latest recipes by browsing our recipe page below, or add one of your own for others to enjoy..</p>
+            </div>
         </div>
+
         <div class="container back-to-list-button">
             <button  onclick="showList()" type='button' class='btn btn-primary btn-sm'>Back To List</button>
         </div>

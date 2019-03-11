@@ -1,49 +1,52 @@
 <script id="recipe-list" type="text/html">
     <div class="card col-sm-10 col-md-4">
         <img src={{image_url}} class="card-img-top">
-        <h4 class="card-title">{{name}}</h4>
-        <p class="card-text">{{summary}}</p>
+        <h4 class="card-title list-card-title">{{name}}</h4>
+        <p class="card-text list-card-text">{{summary}}</p>
         <button recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-success read' >Read More</button>
     </div>
 </script>
 
 <script id="recipe-single" type="text/html">
+
     <div class="row">
-        <div class="col">
+        <div class="col-sm-12">
             <img src={{image_url}} class='img-thumbnail single-image'>
         </div>
-        <div class="col-sm-6">
-            <h3>{{name}}</h3>
-        </div>
-        <div class="col">
-            <h4>Timing</h4>
-            <p><b>Prep: </b>{{prep_time}} minutes</p>
-            <p><b>Cook: </b>{{cook_time}} minutes</p>            
+        <div class="col-sm-12 text-center">
+            <h3 class="single-title">{{name}}</h3>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-sm-3">
-            <h4>Ingredients</h4>
-            <ul id="ingredients">
+        <div class="col">
+            <h4 class="single-sub-title">Timing</h4>
+            <p class="single-text"><b>Prep: </b>{{prep_time}} minutes</p>
+            <p class="single-text"><b>Cook: </b>{{cook_time}} minutes</p>            
+        </div>
+        <div class="col">
+            <h4 class="single-sub-title">Ingredients</h4>
+            <ul id="ingredients" class="single-text">
                 {{#ingredients}}
-                    <li>{{.}}</li>
+                    <li >{{.}}</li>
                 {{/ingredients}}    
             </ul>
         </div>
-        <div class="col">
-            <h4>Method</h4>
-            <p>{{method}}</p>
-        </div>
     </div>
+
     <div class="row">
-        <div class="col-3">
-            <button type='button' class='btn btn-outline-primary btn-sm back' >Back to List</button> 
-        </div>
-        <div class="col-3 ">
-                <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-warning btn-sm edit'>EDIT</button>
-                <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-danger btn-sm delete'>DELETE</button> 
+        <div class="col-sm-12">
+            <h4 class="single-sub-title">Method</h4>
+            <p class="single-text">{{method}}</p>
         </div>
     </div>
+
+    <div class="row"> 
+        <button type='button' class='btn btn-outline-primary btn-sm back col single-button' >Back to List</button> 
+        <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-warning btn-sm edit col single-button'>EDIT</button>
+        <button  recipe_id={{_id.$oid}} data_key={{image_key}} type='button' class='btn btn-outline-danger btn-sm delete col single-button'>DELETE</button> 
+    </div>
+
 </script>
 
 <script id="ingredients-list", type="text/html">
@@ -60,7 +63,7 @@
 
     <div class="form-group">
     <label class="col-md-4 control-label" for="name">Name</label>  
-    <div class="col-md-4">
+    <div class="col-md-10">
     <input id="name" name="name" type="text" placeholder="recipe name" class="form-control input-md">
         
     </div>
@@ -68,16 +71,16 @@
 
 
     <div class="form-group">
-    <label class="col-md-4 control-label" for="prep_time">Preparation time</label>  
-    <div class="col-md-4">
+    <label class="col-md-10 control-label" for="prep_time">Preparation time</label>  
+    <div class="col-md-10">
     <input id="prep_time" name="prep_time" type="text" placeholder="time to prepare" class="form-control input-md" ><span>(in minutes)</span>
         
     </div>
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="cook_time">Cooking time</label>  
-        <div class="col-md-4">
+        <label class="col-md-10 control-label" for="cook_time">Cooking time</label>  
+        <div class="col-md-10">
         <input id="cook_time" name="cook_time" type="text" placeholder="time to cook" class="form-control input-md" > <span>(in minutes)</span>
         
         </div>
@@ -85,13 +88,13 @@
 
 
     <div class="form-group">
-    <label class="col-md-4 control-label" for="ingredients_list">Ingredients</label>
-        <ul class="col-md-4 ingredients_list" >
+    <label class="col-md-10 control-label" for="ingredients_list">Ingredients</label>
+        <ul class="col-md-10 ingredients_list" >
         <li>
             <input class="ingredients" name="ingredients" type="text" class="form-control input-md" >
         </li>
         </ul>
-    <div class="col-md-4 ingredient_buttons" >
+    <div class="col-md-10 ingredient_buttons" >
         <button type="button" onclick="add_ingredients()" class="btn btn-outline-primary btn-sm add_ingredients">Add</button>
         <button type="button" onclick="remove_ingredients()" class="btn btn-outline-warning btn-sm remove_ingredients">Remove</button>
     </div>
@@ -99,30 +102,30 @@
 
 
     <div class="form-group">
-    <label class="col-md-4 control-label" for="method_input">Method</label>
-    <div class="col-md-4">                     
+    <label class="col-md-10 control-label" for="method_input">Method</label>
+    <div class="col-md-10">                     
         <textarea class="form-control" id="method_input" name="method"></textarea>
     </div>
     </div>
 
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="summary_input">Short Description</label>
-        <div class="col-md-4">                     
+        <label class="col-md-10 control-label" for="summary_input">Short Description</label>
+        <div class="col-md-10">                     
         <textarea class="form-control" id="summary_input" name="summary"></textarea>
         </div>
     </div>
 
     <div class="form-group" id="image">
-        <label class="col-md-4 control-label" for="summary_input">Picture</label>
-        <div class="col-md-4">                     
+        <label class="col-md-10 control-label" for="summary_input">Picture</label>
+        <div class="col-md-10">                     
         <input type="file" class="form-control" id="image_file" name="image_file"/>
         </div>
     </div>
 
 
     <div class="form-group">
-    <div class="col-md-4" id="form-buttons">
+    <div class="col-md-10" id="form-buttons">
         <input type="reset" id="recipe_reset" name="recipe_reset" class="btn btn-warning"/>
         <button type="button" onclick="submitRecipe()" id="recipe_submit" name="recipe_submit" class="btn btn-success submit">Submit</button>        
     </div>
