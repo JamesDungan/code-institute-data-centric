@@ -1,6 +1,6 @@
 # data-centric-development
 
-[ReciPlease](https://code-institute-data-centric.herokuapp.com/) is a Single Page Application (SPA) developed as part of the Code Institute Full Stack Software Development Diploma - DATA CENTRIC DEVELOPMENT module. It uses HTML CSS (Bootstrap) and JavaScript on the client side. The backend consists of a REST API created using Flask RESTful which allows data to flow to and from a mongo database.
+[ReciPlease](https://code-institute-data-centric.herokuapp.com/) is a Single Page Application (SPA) developed as part of the Code Institute Full Stack Software Development Diploma - DATA CENTRIC DEVELOPMENT module. It uses HTML CSS (Bootstrap) and JavaScript on the client side. The backend consists of a REST API created using Flask RESTful which allows data to flow to and from a mongo database. Amazon S3 was used to store all image files relating to the recipes. 
 
 ### What is this site for?
  
@@ -41,6 +41,19 @@ Recipes can be deleted or Edited
 
 ## Technologies Used
 
+
+- [flask](http://flask.pocoo.org/docs/1.0/#user-s-guide) & [flask restful](https://flask-restful.readthedocs.io/en/latest/)
+    - The **Flask** web development micro-framework was used on the back end. This was used in conjunction with the **Flask Restful** extension to build a lightweight resful api to serve the recipes in JSON format.
+
+- [mongodb](https://www.mongodb.com/)
+    - A **mongodb** document based database was chosen to persist data for reciplease
+
+- [Amazon S3](https://aws.amazon.com/s3/?nc2=h_m1)
+    - Amazon AWS S3 (Simple Storage Solution) was used to store all images - links to the image files in the cloud were stored in the Mongo database
+
+- [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
+    - Boto is the Amazon Web Services (AWS) SDK for Python. It was used to send and delete recipe image files. 
+
 - [JQuery](https://jquery.com)
     - The project uses **JQuery** to simplify DOM manipulation. This is what allows the SPA to function. The main HTML is contained in a single file which is loaded initially and the javascript shows and hides sections based on the users activity. 
 
@@ -50,11 +63,7 @@ Recipes can be deleted or Edited
 - [mustache.js](https://mustache.github.io/)
     - **mustache.js** is a templating language which was ustilised to enhance the site and make it a true single page application. 
 
-- [mongodb](https://www.mongodb.com/)
-    - A **mongodb** document based database was chosen to persist data for reciplease
 
-- [flask](http://flask.pocoo.org/docs/1.0/#user-s-guide) & [flask restful](https://flask-restful.readthedocs.io/en/latest/)
-    - The **Flask** web development micro-framework was used on the back end. This was used in conjunction with the **Flask Restful** extension to build a lightweight resful api to serve the recipes in JSON format.
 
 
 ## Testing
@@ -69,7 +78,7 @@ To run these tests run this command from your terminal when at the root of the p
 
 ### Heroku
 
-The site was deployed to Heroku via new branch (production) which was based on the master branch. Environment variables used for the database were replaced with corresponding config vars.
+The site was deployed to Heroku via new branch (production) which was based on the master branch. A new app was created in the Heroku environment. Environment variables used for the database and the access keys for the Amazon S3 storage were replaced with corresponding config vars via the heroku dev center. Gunicorn server was installed as a dependency and a Procfile was created with the settings required to run the app using gunicorn. 
 
 ### Locally
 
