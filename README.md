@@ -8,7 +8,7 @@ This website's primary function is to display recipes. Users can browse a recipe
  
 ### How does it work
  
-This site is a single page application powered by the Flask and Flask-RESTful frameworks. The core of the app is a rest-server which is used to serve data to the various templates. These templates are managed by the [mustache.js](https://mustache.github.io/) javaScript library. All data is stored in a [mongodb](https://www.mongodb.com/) database hosed using [mLab](https://mlab.com/welcome/). The rest-server resources call the appropriate functions in the database module which use the [pymongo](https://api.mongodb.com/python/current/) api. [JQuery Ajax](http://api.jquery.com/jquery.ajax/) is used extensively on the front end to make calls to the API and feed data to the mustache templates.
+This site is a single page application powered by the Flask and Flask-RESTful frameworks. The core of the app is a rest-server which is used to serve data to the various templates. These templates are managed by the [mustache.js](https://mustache.github.io/) javaScript library. All data is stored in a [mongodb](https://www.mongodb.com/) database hosed using [mLab](https://mlab.com/welcome/). The rest-server resources call the appropriate functions in the database module which use the [pymongo](https://api.mongodb.com/python/current/) api. [JQuery Ajax](http://api.jquery.com/jquery.ajax/) is used extensively on the front end to make calls to the API and feed data to the mustache templates. Recipe image files are handled by the image_service.py file which implements boto3 AWS sdk for python. The images are extracted from the push request and sent after the database update. Then the image link is sent to the database upon upload.
 
  
 ## UX
