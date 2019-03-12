@@ -7,42 +7,59 @@ html, body{
     height:100%;
     font-size: 10px;
 }
+  
+.navbar-nav>li {
+    font-family: 'Kreon', serif;
+    font-size: 2rem;    
+  }
+  .navbar-nav a:hover{
+    color:#007bff;
+  }
+  li>a{
+    color:black;
+  }
+
+  .btn-row{
+    margin-bottom:20%;
+  }
 
 .reciplease{
-    font-size: 4rem;
+    font-size: 3.95rem;
     color: #f50052;
     font-family: 'Satisfy', cursive;
 }
 
 .vision{
-    font-size: 2rem;
+    font-size: 1.55rem;
     color:#009cf0;
     font-family: 'Kreon', serif;
     
 }
 
+
+
 .vision-p{
     font-size:1.2rem;
     color:white;
-    font-family: 'Kreon', serif;
-    
+    font-family: 'Kreon', serif; 
 }
-
 
 .main-header{
     width: 100%;
     position: relative;
+    background-position: center;
+    padding-top:10%;
     background-size: contain;
     background-image: url("https://s3-eu-west-1.amazonaws.com/ci-data-centric-images/cook-food-kitchen-eat-54455.jpeg");
     background-repeat: no-repeat;
     margin: 0 auto;
 }
-
 .main-header:after{
     padding-top:30%;
     display: block;
     content: '';
 }
+
 .header-content{
     color: black;
     text-align: center;
@@ -62,13 +79,13 @@ html, body{
 }
 
 .list-card-title, .single-title{
-font-size: 3rem;
-font-family: 'Kreon', serif;
+    font-size: 3.5rem;
+    font-family: 'Kreon', serif;
 }
 
-.single-sub-title{
+.single-sub-title, legend{
     font-size: 2.25rem;
-    font-family: 'Bad Script', cursive;
+    font-family: 'Kreon', serif;        
 }
 
 
@@ -77,10 +94,10 @@ font-family: 'Kreon', serif;
     box-shadow: 0px 0px 0px transparent;
     border: 0px solid transparent;
     text-shadow: 0px 0px 0px transparent;
-    font-size:1.25rem;
 }
 .new-recipe-button>button:hover{
     cursor: pointer;
+    color: #007bff;
 }
 .new-recipe-button{
     display: inline;
@@ -92,6 +109,7 @@ font-family: 'Kreon', serif;
 
 .form-group, 
 .form-group input, 
+.form-group textarea,
 .form-group button, 
 .back-to-list-button>button,
 .single-text,
@@ -102,3 +120,60 @@ font-family: 'Kreon', serif;
     font-family: 'Bad Script', cursive;
     
 }
+
+@media only screen  and (min-width: 480px) {
+    .reciplease{
+        font-size:5rem;
+    }
+    .vision{
+        font-size:2rem;
+    }
+    .vision-p{
+        font-size:1.4rem;
+    }
+    .navbar-nav>li{
+        font-size:2.5rem;
+    }
+ }
+
+ @media only screen  and (min-width: 768px) {
+    .reciplease{
+        font-size:6.5rem;
+    }
+    .vision{
+        font-size:2.7rem;
+    }
+    .vision-p{
+        font-size:1.8rem;
+    }
+    .single-text,
+    .single-button{
+        font-size:2rem;
+    }
+    .single-title{
+        font-size: 4rem;
+    }
+    .single-sub-title, legend{
+        font-size:2.75rem;
+    }
+ }
+
+ @media only screen  and (min-width: 991px) {
+    .reciplease{
+        font-size:7.75rem;
+    }
+    .vision{
+        font-size:3.5rem;
+    }
+    .vision-p{
+        font-size:2.3rem;
+    }
+
+    legend{
+        font-size:4rem;
+    }
+
+    .form-group{
+        font-size:2rem;
+    }
+ }

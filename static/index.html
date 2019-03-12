@@ -11,13 +11,13 @@
         <link href="https://fonts.googleapis.com/css?family=Bad+Script|Kreon|Satisfy" rel="stylesheet">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="navbar-brand" href="index.html">Home</a>
+                    <a class="nav-link" href="index.html">Home</a>
                 </li> 
                 <li class="nav-item new-recipe-button">
-                    <button  onclick="showRecipeForm()" type='button' class="nav">Add New Recipe</button>
+                    <button  onclick="showRecipeForm()" type='button' class="nav-link">Add New Recipe</button>
                 </li>
             </ul>
         </nav>    
@@ -56,6 +56,7 @@
     });
 
     function showRecipeForm(){
+        $('.main-header').hide();
         $('.new-recipe-button').hide();
         $('.back-to-list-button').show();
         $('.single-container').html('');
@@ -159,6 +160,7 @@
 
     function showList(){
         $.getJSON('/reciplease/api/v1.0/recipes', function(data){
+            $('.main-header').show();
             $('.new-recipe-button').show();
             $('.back-to-list-button').hide();
             $('.single-container').html('');
@@ -189,6 +191,7 @@
         });
     } 
     function showSingle(id, key){
+        $('.main-header').hide();
         $.getJSON('/reciplease/api/v1.0/recipe/'+id+'/'+key, function(data){
             $('.list-container',).html('');
             $('.single-container').html('');
