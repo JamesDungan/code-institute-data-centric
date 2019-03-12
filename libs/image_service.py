@@ -1,10 +1,6 @@
 import boto3
 from botocore.exceptions import BotoCoreError
 import os
-from dotenv import load_dotenv
-
-dotenv_path = 'C:\\Users\\james\\DEV\\CodeInstitute\\code-institute-data-centric\\.env'
-load_dotenv(dotenv_path)
 
 ACCESS_ID = os.environ.get('ACCESS_ID')
 ACCESS_KEY = os.environ.get('ACCESS_KEY')
