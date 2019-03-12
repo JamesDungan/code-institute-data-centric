@@ -23,6 +23,10 @@ html, body{
     margin-bottom:20%;
   }
 
+  .list-container{
+    margin-bottom: 50px;
+}
+
 .reciplease{
     font-size: 3.95rem;
     color: #f50052;
