@@ -8,20 +8,35 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="../bootstrap/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
+        <link href="https://fonts.googleapis.com/css?family=Bad+Script|Kreon|Satisfy" rel="stylesheet">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="/">Home</a>
+        <nav class="navbar navbar-expand-lg">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li> 
+                <li class="nav-item new-recipe-button">
+                    <button  onclick="showRecipeForm()" type='button' class="nav-link">Add New Recipe</button>
+                </li>
+            </ul>
         </nav>    
 
-        <h1> Welcome to Reciplease </h1>
-        <div class="container new-recipe-button">
-            <button  onclick="showRecipeForm()" type='button' class='btn btn-primary btn-sm'>Add New Recipe</button>
+        
+        <div class="container main-header">
+            <div class="header-content">
+                <h1 class="text-center reciplease"> Reciplease </h1>
+                <div class="vision">Our aim is to please you with our tasty recipes!</div>
+                <p class="vision-p">Find all of our latest recipes by browsing our recipe page below, or add one of your own for others to enjoy..</p>
+            </div>
         </div>
+
         <div class="container back-to-list-button">
             <button  onclick="showList()" type='button' class='btn btn-primary btn-sm'>Back To List</button>
         </div>
-        <div class="container list-container"></div>
+        <div class="container ">
+            <div class="row list-container"></div>
+        </div>
 
         <div class="container single-container"></div>
 
@@ -41,6 +56,7 @@
     });
 
     function showRecipeForm(){
+        $('.main-header').hide();
         $('.new-recipe-button').hide();
         $('.back-to-list-button').show();
         $('.single-container').html('');
@@ -77,20 +93,52 @@
             trimmedData["ingredients"] = ingredients;
         });
         trimmedData = JSON.stringify(trimmedData);
+        
         $.ajax({
             url: url,
             dataType: 'json',
-            type: type,
+            method: type,
             contentType: 'application/json',
             data: trimmedData,
             processData: false,
-            success: function( data, textStatus, jQxhr ){
-                showList();
+            success: function( data, textStatus, jQxhr ){ 
+                
+                if($('#image_file')[0] != undefined && type == 'post'){
+                    if ($('#image_file')[0].files[0] != undefined){
+                        fd = new FormData();
+                        let id = data._id;
+                        $.each(jQuery('#image_file')[0].files, function(i, file) {
+                            fd.append('image_file', file);
+                            fd.append('_id', id)
+                        });
+                        
+                        sendImage(fd);
+                    } else
+                        {
+                        showList();
+                        }
+                    
+                }else{
+                    showList();
+                }
+                
             },
             error: function( jqXhr, textStatus, errorThrown ){
                 console.log( errorThrown );
                 showList();
             }
+        });
+    }
+
+    function sendImage(fd){
+        $.ajax({url:'/reciplease/api/v1.0/upload',
+        method:'post',
+        contentType:false,
+        processData:false,
+        data: fd,
+        success: function(data, textStatus, jQxhr){
+            showList();
+            } 
         });
     }
 
@@ -104,12 +152,15 @@
         let url = '/reciplease/api/v1.0/recipe/';
         let type = 'put';
         let id = $('#recipe_id').attr('recipe_id');
-        url += id;
+        let key = $('#image_key').attr('image_key');
+        url = url + id +'/' + key;
+        
         setUpAndSend(url, type);
     }
 
     function showList(){
         $.getJSON('/reciplease/api/v1.0/recipes', function(data){
+            $('.main-header').show();
             $('.new-recipe-button').show();
             $('.back-to-list-button').hide();
             $('.single-container').html('');
@@ -122,22 +173,26 @@
                 });
                 $('.read').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    showSingle(id);
+                    let key = this.getAttribute('data_key');
+                    showSingle(id, key);
                 })
                 $('.edit').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    editSingle(id);
+                    let key = this.getAttribute('data_key');
+                    editSingle(id, key);
                 })
                 $('.delete').click(function(){
                     let id = this.getAttribute('recipe_id');
-                    deleteSingle(id);
+                    let key = this.getAttribute('data_key');
+                    deleteSingle(id, key);
                 });
             });
 
         });
     } 
-    function showSingle(id){
-        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+    function showSingle(id, key){
+        $('.main-header').hide();
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id+'/'+key, function(data){
             $('.list-container',).html('');
             $('.single-container').html('');
             $.get('../mustache/templates.html', function(templates) {
@@ -157,9 +212,9 @@
             });
         });    
     } 
-    function deleteSingle(id){
+    function deleteSingle(id, key){
         $.ajax({
-        url: '/reciplease/api/v1.0/recipe/'+id,
+        url: '/reciplease/api/v1.0/recipe/'+id+'/'+key,
         type: 'delete',
         success: function(){
             console.log('delete successful');
@@ -167,10 +222,11 @@
             }
         });
     }
-    function editSingle(id){
+    function editSingle(id, key){
         showRecipeForm();
-        $.getJSON('/reciplease/api/v1.0/recipe/'+id, function(data){
+        $.getJSON('/reciplease/api/v1.0/recipe/'+id+'/'+key, function(data){
             $('#recipe_id').attr('recipe_id', data._id.$oid);
+            $('#image_key').attr('image_key', data.image_key);
             $('#name').val(data.name);
             $('#prep_time').val(data.prep_time);
             $('#cook_time').val(data.cook_time); 
@@ -186,6 +242,7 @@
             $('#method_input').val(data.method);
             $('#summary_input').val(data.summary);
             $('#recipe_submit').remove();
+            $('#image').remove();
             $.get('../mustache/templates.html', function(templates) {
                 var template = $(templates).filter('#update-recipe-button').html();
                 $('#form-buttons').append(Mustache.render(template));
