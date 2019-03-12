@@ -13,7 +13,11 @@ This site is a single page application powered by the Flask and Flask-RESTful fr
  
 ## UX
 
-The site has been designed for food lovers and recipe enthusiasts. Users can view, edit, submit and delete recipes.
+The site has been designed for food lovers and recipe enthusiasts. Users can view, edit, submit and delete recipes. 
+Great care was taken when choosing a bright and refreshing colour scheme to compliment the pictures of food that would eventually appear on the site. The [Color Calculator](https://www.sessions.edu/color-calculator/) was used to pick an initial striking shade of red `#f50052` which was then used as the basis for the other 3 colour choices `#52f500`, `#00a3f5` and `#f55200`, using a 'tetradic' harmony. 
+It was also decided that a simple tile layout on the home screen would be best to give the user an initial view of the choice of recipes available. With a green coloured primary action button in each recipe card beneath the description, leading to a full recipe page. 
+On the full recipe pages, precedence is given to the recipe picture which is important as it shows the user a vivid image of the dish at hand. This is followed by important bulleted information (timings and ingredients) which then flows into the method. 
+The fonts chosen were picked because of their readability as well as their artistic and elegant look. 
 
 ### User stories: 
 
